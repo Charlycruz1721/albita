@@ -1,68 +1,319 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aviso de Videovigilancia</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #ffffff;
-      color: #222;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    .container {
-      max-width: 700px;
-      padding: 40px;
-      border: 2px solid #000;
-      border-radius: 10px;
-      text-align: center;
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 16px;
-      line-height: 1.6;
-      margin: 10px 0;
-      text-align: justify;
-    }
-    ul {
-      text-align: left;
-      margin: 15px 0;
-    }
-    li {
-      margin: 5px 0;
-    }
-    .footer {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>para: alba</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital@0;1&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #00ff88;
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  #scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    z-index: 100;
+  }
+
+  #noise {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    z-index: 99;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  #terminal {
+    width: min(720px, 95vw);
+    padding: 2rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .prompt-line {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-size: clamp(11px, 2.2vw, 14px);
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+  .prompt-line.visible { opacity: 1; }
+
+  .prompt { color: #00aaff; }
+  .path { color: #ff69b4; }
+  .cmd { color: #00ff88; }
+  .output { color: #aaffcc; }
+  .error { color: #ff4444; }
+  .warn { color: #ffcc00; }
+  .dim { color: #336644; }
+
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: #00ff88;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  #reveal {
+    display: none;
+    margin-top: 2rem;
+    border: 1px solid #003322;
+    padding: 2rem;
+    position: relative;
+    background: #050d08;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+  #reveal.show {
+    display: block;
+  }
+  #reveal.fade-in {
+    opacity: 1;
+  }
+
+  #reveal::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00ff88, transparent);
+  }
+  #reveal::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00ff88, transparent);
+  }
+
+  .dedicatoria-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #336644;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .nombre {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(3rem, 12vw, 5.5rem);
+    color: #00ff88;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 40px rgba(0,255,136,0.3);
+  }
+
+  .para-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: #336644;
+    margin-bottom: 0.25rem;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: #003322;
+    margin: 1.5rem auto;
+  }
+
+  .song-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    color: #aaffcc;
+    margin-bottom: 0.3rem;
+  }
+
+  .song-artist {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: #336644;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .play-btn {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: #0a0a0a;
+    background: #00ff88;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+  .play-btn:hover {
+    background: #aaffcc;
+    transform: scale(1.03);
+  }
+
+  .mensaje {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    color: #4a8866;
+    line-height: 1.8;
+    max-width: 440px;
+    margin: 0 auto 1.5rem;
+  }
+
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background: #00ff88;
+    opacity: 0;
+    animation: float linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.2; }
+    100% { transform: translateY(-20px); opacity: 0; }
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>⚠ AVISO DE VIDEOVIGILANCIA ⚠</h1>
 
-    <p>Este estacionamiento cuenta con sistema de videovigilancia activo 24/7 para la protección de personas, vehículos e instalaciones.</p>
+<div id="scanline"></div>
+<div id="noise"></div>
+<div id="particles"></div>
 
-    <p>Las imágenes y grabaciones obtenidas son utilizadas para:</p>
-    <ul>
-      <li>Seguridad y control de accesos</li>
-      <li>Prevención de conductas indebidas</li>
-      <li>Resguardo del patrimonio</li>
-    </ul>
-
-    <p>Cualquier conducta inapropiada será detectada, registrada y atendida conforme a los protocolos de seguridad, incluyendo la aplicación de medidas correctivas necesarias para salvaguardar la integridad del lugar y los vehiculos.</p>
-
-    <p class="footer">Responsable: TecnoDany</p>
-
-    <p>Al ingresar a este espacio, usted reconoce y acepta el tratamiento de su imagen para los fines descritos.</p>
+<div id="terminal">
+  <div id="lines"></div>
+  <div id="reveal">
+    <div class="dedicatoria-label">// dedicado a el amor de mi vida</div>
+    <div class="nombre">Alba</div>
+    <div class="divider"></div>
+    <p class="mensaje">
+      Hay canciones que dicen lo que las palabras solas no pueden.<br>
+      Esta es una de ellas.
+    </p>
+    <div class="song-title">Almohada</div>
+    <div class="song-artist">— José José —</div>
+    <a class="play-btn" href="https://www.youtube.com/watch?v=CAneHUXYTfY&list=RDCAneHUXYTfY&start_radio=1" target="_blank">▶ escuchar</a>
   </div>
+</div>
+
+<script>
+const lines = [
+  { delay: 300,  type: 'prompt', text: '~', cmd: 'ssh corazon@192.168.1.1' },
+  { delay: 900,  type: 'output', text: 'Intentando conectar con el corazón... [OK]' },
+  { delay: 1600, type: 'output', text: 'Autenticando emociones...' },
+  { delay: 2200, type: 'warn',   text: 'WARNING: Este sistema ha sido marcado como vulnerable... una vez dentro, no hay retorno.' },
+  { delay: 3000, type: 'prompt', text: 'corazon@192.168.1.1', cmd: 'ls -la /sentimientos/' },
+
+  { delay: 3700, type: 'dim',    text: 'drwxr-xr-x  recuerdos/    # Fragmentos que construimos juntos' },
+  { delay: 3900, type: 'dim',    text: 'drwxr-xr-x  momentos/     # Instantes que siguen corriendo en segundo plano' },
+  { delay: 4100, type: 'dim',    text: '-rw-r--r--  almohada.mp3  # Noches donde tu respiración sincroniza la mía' },
+  { delay: 4300, type: 'dim',    text: '-rw-------  pensamientos_de_ti.log  # Acceso restringido: demasiado real' },
+
+  { delay: 5000, type: 'prompt', text: 'corazon@192.168.1.1', cmd: 'cat pensamientos_de_ti.log' },
+
+  { delay: 5700, type: 'output', text: '[2025-01-01 06:12] Desperté... y estabas a mi lado.' },
+  { delay: 6100, type: 'output', text: '[2025-03-14 23:48] Me quedé mirándote dormir... sin decir nada.' },
+  { delay: 6400, type: 'output', text: '[hoy        ahora] Incluso aquí, contigo, sigo descubriéndote.' },
+
+  { delay: 7200, type: 'prompt', text: 'corazon@192.168.1.1', cmd: './dedicar --para="Alba" --cancion="almohada.mp3"' },
+
+  { delay: 7900, type: 'output', text: 'Inicializando lo que sí vivo contigo...' },
+  { delay: 8400, type: 'output', text: 'Leyendo pequeños detalles que otros no ven...' },
+  { delay: 9000, type: 'output', text: 'Compilando lo cotidiano que se volvió esencial...' },
+  { delay: 9500, type: 'output', text: 'Resolviendo dependencias: calma, complicidad, amor constante...' },
+
+  { delay: 9800, type: 'output', text: '> Listo. Alba… no eres un proceso temporal; eres parte del sistema.' },
+];
+const container = document.getElementById('lines');
+const revealEl = document.getElementById('reveal');
+
+lines.forEach(({ delay, type, text, cmd }) => {
+  setTimeout(() => {
+    const div = document.createElement('div');
+    div.className = 'prompt-line';
+
+    if (type === 'prompt') {
+      div.innerHTML = `<span class="prompt">┌─[</span><span class="path">${text}</span><span class="prompt">]</span><br><span class="prompt">└──▶ $</span>&nbsp;<span class="cmd">${cmd}</span>`;
+    } else if (type === 'output') {
+      div.innerHTML = `<span class="output">&nbsp;&nbsp;${text}</span>`;
+    } else if (type === 'warn') {
+      div.innerHTML = `<span class="warn">&nbsp;&nbsp;⚠ ${text}</span>`;
+    } else if (type === 'error') {
+      div.innerHTML = `<span class="error">&nbsp;&nbsp;✖ ${text}</span>`;
+    } else if (type === 'dim') {
+      div.innerHTML = `<span class="dim">&nbsp;&nbsp;${text}</span>`;
+    }
+
+    container.appendChild(div);
+    requestAnimationFrame(() => div.classList.add('visible'));
+    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, delay);
+});
+
+setTimeout(() => {
+  revealEl.style.display = 'block';
+  revealEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => revealEl.classList.add('fade-in'), 100);
+}, 10800);
+
+// Particles
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 40; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.width = (Math.random() * 2 + 1) + 'px';
+  p.style.height = (Math.random() * 6 + 2) + 'px';
+  p.style.animationDuration = (Math.random() * 12 + 8) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  particlesEl.appendChild(p);
+}
+</script>
 </body>
 </html>
