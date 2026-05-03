@@ -229,7 +229,7 @@
 <div id="terminal">
   <div id="lines"></div>
   <div id="reveal">
-    <div class="dedicatoria-label">// dedicado a el amor de mi vida</div>
+    <div class="dedicatoria-label">// dedicado a</div>
     <div class="nombre">Alba</div>
     <div class="divider"></div>
     <p class="mensaje">
@@ -238,38 +238,40 @@
     </p>
     <div class="song-title">Almohada</div>
     <div class="song-artist">— José José —</div>
-    <a class="play-btn" href="https://www.youtube.com/watch?v=CAneHUXYTfY&list=RDCAneHUXYTfY&start_radio=1" target="_blank">▶ escuchar</a>
+    <a class="play-btn" href="https://www.youtube.com/results?search_query=almohada+jose+jose" target="_blank">▶ escuchar</a>
   </div>
 </div>
 
 <script>
+
 const lines = [
-  { delay: 300,  type: 'prompt', text: '~', cmd: 'ssh corazon@192.168.1.1' },
-  { delay: 900,  type: 'output', text: 'Intentando conectar con el corazón... [OK]' },
-  { delay: 1600, type: 'output', text: 'Autenticando emociones...' },
-  { delay: 2200, type: 'warn',   text: 'WARNING: Este sistema ha sido marcado como vulnerable... una vez dentro, no hay retorno.' },
-  { delay: 3000, type: 'prompt', text: 'corazon@192.168.1.1', cmd: 'ls -la /sentimientos/' },
+  { delay: 900,  type: 'prompt', text: '~', cmd: 'ssh corazon@192.168.1.1' },
+  { delay: 2700,  type: 'output', text: 'Intentando conectar con el corazón... [OK]' },
+  { delay: 4800, type: 'output', text: 'Autenticando emociones...' },
+  { delay: 6600, type: 'warn',   text: 'WARNING: Este sistema ha sido marcado como vulnerable... una vez dentro, no hay retorno.' },
+  { delay: 9000, type: 'prompt', text: 'corazon@192.168.1.1', cmd: 'ls -la /sentimientos/' },
 
-  { delay: 3700, type: 'dim',    text: 'drwxr-xr-x  recuerdos/    # Fragmentos que construimos juntos' },
-  { delay: 3900, type: 'dim',    text: 'drwxr-xr-x  momentos/     # Instantes que siguen corriendo en segundo plano' },
-  { delay: 4100, type: 'dim',    text: '-rw-r--r--  almohada.mp3  # Noches donde tu respiración sincroniza la mía' },
-  { delay: 4300, type: 'dim',    text: '-rw-------  pensamientos_de_ti.log  # Acceso restringido: demasiado real' },
+  { delay: 11100, type: 'dim',    text: 'drwxr-xr-x  recuerdos/    # Fragmentos que construimos juntos' },
+  { delay: 11700, type: 'dim',    text: 'drwxr-xr-x  momentos/     # Instantes que siguen corriendo en segundo plano' },
+  { delay: 12300, type: 'dim',    text: '-rw-r--r--  almohada.mp3  # Noches donde tu respiración sincroniza la mía' },
+  { delay: 12900, type: 'dim',    text: '-rw-------  pensamientos_de_ti.log  # Acceso restringido: demasiado real' },
 
-  { delay: 5000, type: 'prompt', text: 'corazon@192.168.1.1', cmd: 'cat pensamientos_de_ti.log' },
+  { delay: 15000, type: 'prompt', text: 'corazon@192.168.1.1', cmd: 'cat pensamientos_de_ti.log' },
 
-  { delay: 5700, type: 'output', text: '[2025-01-01 06:12] Desperté... y estabas a mi lado.' },
-  { delay: 6100, type: 'output', text: '[2025-03-14 23:48] Me quedé mirándote dormir... sin decir nada.' },
-  { delay: 6400, type: 'output', text: '[hoy        ahora] Incluso aquí, contigo, sigo descubriéndote.' },
+  { delay: 17100, type: 'output', text: '[2025-01-01 06:12] Desperté... y estabas a mi lado.' },
+  { delay: 18300, type: 'output', text: '[2025-03-14 23:48] Me quedé mirándote dormir... sin decir nada.' },
+  { delay: 19200, type: 'output', text: '[hoy        ahora] Incluso aquí, contigo, sigo descubriéndote.' },
 
-  { delay: 7200, type: 'prompt', text: 'corazon@192.168.1.1', cmd: './dedicar --para="Alba" --cancion="almohada.mp3"' },
+  { delay: 21600, type: 'prompt', text: 'corazon@192.168.1.1', cmd: './dedicar --para="Alba" --cancion="almohada.mp3"' },
 
-  { delay: 7900, type: 'output', text: 'Inicializando lo que sí vivo contigo...' },
-  { delay: 8400, type: 'output', text: 'Leyendo pequeños detalles que otros no ven...' },
-  { delay: 9000, type: 'output', text: 'Compilando lo cotidiano que se volvió esencial...' },
-  { delay: 9500, type: 'output', text: 'Resolviendo dependencias: calma, complicidad, amor constante...' },
+  { delay: 23700, type: 'output', text: 'Inicializando lo que sí vivo contigo...' },
+  { delay: 25200, type: 'output', text: 'Leyendo pequeños detalles que otros no ven...' },
+  { delay: 27000, type: 'output', text: 'Compilando lo cotidiano que se volvió esencial...' },
+  { delay: 29400, type: 'output', text: 'Resolviendo dependencias: calma, complicidad, amor constante...' },
 
-  { delay: 9800, type: 'output', text: '> Listo. Alba… no eres un proceso temporal; eres parte del sistema.' },
+  { delay: 31000, type: 'output', text: '> Listo. Alba… no eres un proceso temporal; eres parte del sistema.' },
 ];
+
 const container = document.getElementById('lines');
 const revealEl = document.getElementById('reveal');
 
@@ -300,7 +302,7 @@ setTimeout(() => {
   revealEl.style.display = 'block';
   revealEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   setTimeout(() => revealEl.classList.add('fade-in'), 100);
-}, 10800);
+}, 32400);
 
 // Particles
 const particlesEl = document.getElementById('particles');
